@@ -2,15 +2,20 @@ import unittest
 import urllib.request
 import json
 
+
+
+SERVER_ON_HEROKU = "https://sample-python-app-task.herokuapp.com"
+
+
 class Capitals(unittest.TestCase):
     
 
     #test to check if server is running
     def test_server(self): 
-        res = urllib.request.urlopen('http://localhost:5000')
+        res = urllib.request.urlopen(SERVER_ON_HEROKU)
         self.assertEqual(res.status ,200)
 
-
+        
 
     """
     Test the route for get country capital
@@ -37,11 +42,11 @@ class Capitals(unittest.TestCase):
         ]
 
         for index , country in enumerate(countries):
-            print('http://localhost:5000/capital?country={}'.format(country))
-            response = urllib.request.urlopen('http://localhost:5000/capital?country={}'.format(country))
+            #print('http://localhost:5000/capital?country={}'.format(country))
+            response = urllib.request.urlopen('{}/capital?country={}'.format(SERVER_ON_HEROKU,country))
             response = response.read().decode('utf-8')    #convert bytes stream into string
             response_status = json.loads(response)['error']  #if any error in response body then error field is True
-            print(response_status)
+            #print(response_status)
             self.assertEqual(response_status , isValidCountry[index]) 
         
 
